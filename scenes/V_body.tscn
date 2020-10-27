@@ -1,0 +1,45 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://game_assets/v_sprite/V_walk_3.png" type="Texture" id=1]
+[ext_resource path="res://game_assets/v_sprite/V_walk_2.png" type="Texture" id=2]
+[ext_resource path="res://game_assets/v_sprite/V_walk_1.png" type="Texture" id=3]
+[ext_resource path="res://game_assets/v_sprite/V_breathe.png" type="Texture" id=4]
+[ext_resource path="res://game_assets/v_sprite/V_main.png" type="Texture" id=5]
+[ext_resource path="res://scripts/V_body.gd" type="Script" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 5 ), ExtResource( 4 ) ],
+"loop": true,
+"name": "breathe",
+"speed": 2.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "walk",
+"speed": 15.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 29.9428, 66.3144 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 32.0239, 68.0982 )
+
+[node name="V_body" type="KinematicBody2D"]
+collision_mask = 8
+script = ExtResource( 6 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="EnemyDetector" type="Area2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+shape = SubResource( 3 )
+[connection signal="body_entered" from="EnemyDetector" to="." method="_on_EnemyDetector_body_entered"]
